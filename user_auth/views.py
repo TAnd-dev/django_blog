@@ -12,7 +12,7 @@ def user_reg(request):
         if form.is_valid():
             form.save()
             messages.success(request, 'Вы успешно зарегестрировались')
-            return redirect('admin')
+            return redirect('blog')
         else:
             messages.error(request, 'Ошибка регистрации')
     else:
@@ -26,7 +26,7 @@ def user_login(request):
         if form.is_valid():
             user = form.get_user()
             login(request, user)
-            redirect('home')
+            return redirect('blog')
         else:
             messages.error(request, 'Неверное имя пользователя или пароль')
     else:
