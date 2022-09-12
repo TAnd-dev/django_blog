@@ -1,14 +1,18 @@
+caching{% load menu %}
+{% load cache %}
+
 <nav class="navbar navbar-expand-lg navbar-dark bg-dark mb-2">
     <div class="container-fluid">
         <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarTogglerDemo03"
                 aria-controls="navbarTogglerDemo03" aria-expanded="false" aria-label="Переключатель навигации">
             <span class="navbar-toggler-icon"></span>
         </button>
-        <a class="navbar-brand" href="#">Django blog</a>
+        <a class="navbar-brand" href="{% url 'blog' %}">Django blog</a>
         <div class="collapse navbar-collapse" id="navbarTogglerDemo03">
+            {% cache 20 headers %}
             <ul class="navbar-nav me-auto mb-2 mb-lg-0">
                 <li class="nav-item">
-                    <a class="nav-link" href="#">Главная</a>
+                    <a class="nav-link" href="{% url 'blog' %}">Главная</a>
                 </li>
                 <li class="nav-item">
                     <div class="dropdown">
@@ -16,11 +20,7 @@
                                 data-bs-toggle="dropdown" aria-expanded="false">
                             Категории
                         </button>
-                        <ul class="dropdown-menu bg-dark border-0 ms-2" aria-labelledby="dropdownMenuButton1">
-                            <li><a class="nav-link" href="#">Действие</a></li>
-                            <li><a class="nav-link" href="#">Другое действие</a></li>
-                            <li><a class="nav-link" href="#">Что-то еще здесь</a></li>
-                        </ul>
+                        {% show_menu %}
                     </div>
                 </li>
                 <li class="nav-item">
@@ -36,6 +36,7 @@
                     <a class="nav-link" href="#">Форум</a>
                 </li>
             </ul>
+            {% endcache %}
             <ul class="navbar-nav me-4 mb-2 mb-lg-0">
                 <li class="nav-item">
                     <a class="nav-link" href="#">Курс</a>
