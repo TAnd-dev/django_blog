@@ -20,17 +20,21 @@ def base_blog():
     return template_name, context_object_name, paginate_by, allow_empty
 
 
+def get_context_data_sort(self, context):
+    sort = self.request.GET.get('sort')
+    sort = sort if sort else 'created_date'
+    context['sort'] = sort_list[sort]
+    return context
+
+
 class Blog(ListView):
     model = Post
     template_name, context_object_name, paginate_by, allow_empty = base_blog()
 
     def get_context_data(self, *, object_list=None, **kwargs):
         context = super().get_context_data(**kwargs)
-        sort = self.request.GET.get('sort')
-        sort = sort if sort else 'created_date'
-        context['sort'] = sort_list[sort]
+        context = get_context_data_sort(self, context)
         context['title'] = 'Blog'
-
         return context
 
     def get_queryset(self):
@@ -53,9 +57,7 @@ class PostByCategory(ListView):
 
     def get_context_data(self, *, object_list=None, **kwargs):
         context = super().get_context_data(**kwargs)
-        sort = self.request.GET.get('sort')
-        sort = sort if sort else 'created_date'
-        context['sort'] = sort_list[sort]
+        context = get_context_data_sort(self, context)
         context['title'] = Category.objects.get(slug=self.kwargs['slug'])
         return context
 
@@ -73,9 +75,7 @@ class PostByTag(ListView):
 
     def get_context_data(self, *, object_list=None, **kwargs):
         context = super().get_context_data(**kwargs)
-        sort = self.request.GET.get('sort')
-        sort = sort if sort else 'created_date'
-        context['sort'] = sort_list[sort]
+        context = get_context_data_sort(self, context)
         context['title'] = str(Tag.objects.get(slug=self.kwargs['slug']))
         return context
 
