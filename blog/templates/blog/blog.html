@@ -2,6 +2,26 @@
 
 {% block content %}
 <div class="col">
+    <div class="row row-cols-3">
+        <div class="row col-8">
+            {% if request.resolver_match.url_name == 'category' %}
+            <h4>Категория: {{ title }}</h4>
+            {% elif request.resolver_match.url_name == 'tag' %}
+            <h4>Тэг: {{ title }}</h4>
+            {% endif %}
+        </div>
+        <div class="dropdown ms-4 mb-2 d-flex justify-content-end">
+            <button class="btn btn-dark dropdown-toggle" type="button" id="dropdownMenuButton1"
+                    data-bs-toggle="dropdown" aria-expanded="false">
+                {{ sort }}
+            </button>
+            <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
+                <li><a class="dropdown-item" href="?sort=created_date">По времени</a></li>
+                <li><a class="dropdown-item" href="?sort=likes">По лайкам</a></li>
+                <li><a class="dropdown-item" href="?sort=views">По просмотрам</a></li>
+            </ul>
+        </div>
+    </div>
     <div class="ms-3 row row-cols-1 row-cols-md-2 g-4">
         {% for post in posts %}
         <div class="col">
@@ -54,21 +74,6 @@
                 </a>
             </li>
             {% endif %}
-
-
-            <!--                        <li class="page-item">-->
-            <!--                            <a class="page-link" href="#" aria-label="Предыдущая">-->
-            <!--                                <span aria-hidden="true">&laquo;</span>-->
-            <!--                            </a>-->
-            <!--                        </li>-->
-            <!--            <li class="page-item"><a class="page-link" href="#">1</a></li>-->
-            <!--            <li class="page-item"><a class="page-link" href="#">2</a></li>-->
-            <!--            <li class="page-item"><a class="page-link" href="#">3</a></li>-->
-            <!--            <li class="page-item">-->
-            <!--                <a class="page-link" href="#" aria-label="Следующая">-->
-            <!--                    <span aria-hidden="true">&raquo;</span>-->
-            <!--                </a>-->
-            <!--            </li>-->
         </ul>
     </nav>
     {% endif %}

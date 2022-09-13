@@ -16,6 +16,8 @@ class PostAdminForm(forms.ModelForm):
 class PostAdmin(admin.ModelAdmin):
     prepopulated_fields = {'slug': ('title',)}
     form = PostAdminForm
+    list_display = ['id', 'title', 'category', 'created_date', 'likes', 'views']
+    list_display_links = ['id', 'title']
 
 
 class CategoryAdmin(admin.ModelAdmin):

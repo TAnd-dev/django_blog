@@ -1,51 +1,32 @@
-<h5 class="text-center">Самое просматриваемое</h5>
-        {% for post in most_views %}
-        <div class="col">
-            <div class="card h-100">
-                <a href="{{ post.get_absolute_url }}" class="text-decoration-none text-reset">
-                    {% if post.photo %}
-                    <img src="{{ post.photo.url }}" class="post-img card-img-top" alt="">
-                    {% else %}
-                    <img src="https://images.unsplash.com/photo-1659478039681-0ebbf73c7fb9?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1332&q=80"
-                         class="post-img card-img-top" alt="">
-                    {% endif %}
-                </a>
-                <a href="{{ post.category.get_absolute_url }}" class="my-card-img-overlay link-dark">
-                    <h5 class="card-title">{{ post.category }}</h5>
-                </a>
-                <a href="{{ post.get_absolute_url }}" class="card-body text-decoration-none text-reset">
-                    <h5 class="card-title">{{ post.title|truncatewords_html:60|safe }}</h5>
-                    <p class="card-text">{{ post.text|truncatewords_html:10|safe }}</p>
-                </a>
-                <div class="card-footer">
-                    <small class="text-muted">{{ post.created_date }}</small>
-                </div>
-            </div>
+<h5 class="text-center">Популярное за неделю</h5>
+{% for post in most_likes %}
+<div class="col">
+    <div class="card h-100">
+        <a href="{{ post.get_absolute_url }}" class="text-decoration-none text-reset">
+            {% if post.photo %}
+            <img src="{{ post.photo.url }}" class="post-img card-img-top" alt="">
+            {% else %}
+            <img src="https://images.unsplash.com/photo-1659478039681-0ebbf73c7fb9?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1332&q=80"
+                 class="post-img card-img-top" alt="">
+            {% endif %}
+        </a>
+        <a href="{{ post.category.get_absolute_url }}" class="my-card-img-overlay link-dark">
+            <h5 class="card-title">{{ post.category }}</h5>
+        </a>
+        <a href="{{ post.get_absolute_url }}" class="card-body text-decoration-none text-reset">
+            <h5 class="card-title">{{ post.title|truncatewords_html:60|safe }}</h5>
+            <p class="card-text">{{ post.text|truncatewords_html:10|safe }}</p>
+        </a>
+        <div class="card-footer">
+            <small class="text-muted">{{ post.created_date }}</small>
         </div>
-        {% endfor %}
-
-<h5 class="text-center">Больше всего лайков</h5>
-        {% for post in most_likes %}
-        <div class="col">
-            <div class="card h-100">
-                <a href="{{ post.get_absolute_url }}" class="text-decoration-none text-reset">
-                    {% if post.photo %}
-                    <img src="{{ post.photo.url }}" class="post-img card-img-top" alt="">
-                    {% else %}
-                    <img src="https://images.unsplash.com/photo-1659478039681-0ebbf73c7fb9?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1332&q=80"
-                         class="post-img card-img-top" alt="">
-                    {% endif %}
-                </a>
-                <a href="{{ post.category.get_absolute_url }}" class="my-card-img-overlay link-dark">
-                    <h5 class="card-title">{{ post.category }}</h5>
-                </a>
-                <a href="{{ post.get_absolute_url }}" class="card-body text-decoration-none text-reset">
-                    <h5 class="card-title">{{ post.title|truncatewords_html:60|safe }}</h5>
-                    <p class="card-text">{{ post.text|truncatewords_html:10|safe }}</p>
-                </a>
-                <div class="card-footer">
-                    <small class="text-muted">{{ post.created_date }}</small>
-                </div>
-            </div>
-        </div>
-        {% endfor %}
+    </div>
+</div>
+{% endfor %}
+<div>
+    {% for tag in tags %}
+    <a href="{{ tag.get_absolute_url }}" class="btn btn-dark mb-1" type="button" id="dropdownMenuButton1" aria-expanded="false">
+        {{ tag }}
+    </a>
+    {% endfor %}
+</div>
