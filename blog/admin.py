@@ -1,6 +1,6 @@
 from django.contrib import admin
 
-from blog.models import Post, Category, Tag, UserPostRelation
+from blog.models import Post, Category, Tag
 from ckeditor_uploader.widgets import CKEditorUploadingWidget
 from django import forms
 

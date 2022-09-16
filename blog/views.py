@@ -4,7 +4,6 @@ from django.views.generic import ListView, DetailView
 
 from blog.models import Post, Category, Tag
 
-
 sort_list = {
     'created_date': 'По времени',
     'likes': 'По лайкам',
@@ -12,11 +11,7 @@ sort_list = {
 }
 
 
-def base_blog():
-    template_name = 'blog/blog.html'
-    context_object_name = 'posts'
-    paginate_by = 10
-    allow_empty = False
+def base_blog(template_name='blog/blog.html', context_object_name='posts', paginate_by=1, allow_empty=False):
     return template_name, context_object_name, paginate_by, allow_empty
 
 
@@ -64,7 +59,6 @@ class PostByCategory(ListView):
 
 class PostByTag(ListView):
     template_name, context_object_name, paginate_by, allow_empty = base_blog()
-    allow_empty = False
 
     def get_queryset(self):
         sort = self.request.GET.get('sort')
@@ -88,4 +82,18 @@ class PostDetail(DetailView):
         self.object.views = F('views') + 1
         self.object.save()
         self.object.refresh_from_db()
+        return context
+
+
+class Search(ListView):
+    template_name, context_object_name, paginate_by, allow_empty = base_blog(allow_empty=True)
+
+    def get_queryset(self):
+        search = self.request.GET.get('search')
+        return Post.objects.filter(title__icontains=search)
+
+    def get_context_data(self, *, object_list=None, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context = get_context_data_sort(self, context)
+        context['search'] = f"search={self.request.GET.get('search')}&"
         return context
