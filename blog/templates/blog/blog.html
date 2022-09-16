@@ -42,7 +42,16 @@
                     <p class="card-text">{{ post.text|truncatewords_html:10|safe }}</p>
                 </a>
                 <div class="card-footer">
-                    <small class="text-muted">{{ post.created_date }}</small>
+                    <div class="row">
+                        <div class="col">
+                            <small class="text-muted">{{ post.created_date|date:"d-m-y H:i" }}</small>
+                        </div>
+                        <div class="col text-end">
+                            <small class="text-muted">👁 {{ post.views }}</small>
+                            <small class="text-muted">❤ {{ post.likes }}</small>
+                            <small class="text-muted">👎 {{ post.dislikes }}</small>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>

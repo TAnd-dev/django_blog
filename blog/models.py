@@ -14,6 +14,7 @@ class Post(models.Model):
     )
     author = models.ForeignKey(
         'auth.User',
+        related_name='my_posts',
         on_delete=models.CASCADE
     )
     text = models.TextField(
@@ -52,6 +53,11 @@ class Post(models.Model):
         verbose_name='Дизлайки',
         default=0
     )
+    # viewers = models.ManyToManyField(
+    #     'auth.User',
+    #     through='UserPostRelation',
+    #     related_name='view_posts'
+    # )
 
     def __str__(self):
         return f'{self.title}'
@@ -103,3 +109,24 @@ class Tag(models.Model):
 
     class Meta:
         ordering = ['tag_name']
+
+
+# class UserPostRelation(models.Model):
+#
+#     RATE_CHOICES = (
+#         (1, 'like'),
+#         (0, 'neutral'),
+#         (-1, 'dislike')
+#     )
+#
+#     user = models.ForeignKey(
+#         'auth.User',
+#         on_delete=models.CASCADE)
+#     post = models.ForeignKey(
+#         Post,
+#         on_delete=models.CASCADE
+#     )
+#     rate = models.SmallIntegerField(choices=RATE_CHOICES)
+#
+#     def __str__(self):
+#         return f'{self.user}: {self.post}: {self.rate}'
