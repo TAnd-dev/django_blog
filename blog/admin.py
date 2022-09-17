@@ -1,6 +1,6 @@
 from django.contrib import admin
 
-from blog.models import Post, Category, Tag
+from blog.models import Post, Category, Tag, Comments
 from ckeditor_uploader.widgets import CKEditorUploadingWidget
 from django import forms
 
@@ -32,3 +32,4 @@ admin.site.register(Post, PostAdmin)
 admin.site.register(Category, CategoryAdmin)
 admin.site.register(Tag, TagAdmin)
 # admin.site.register(UserPostRelation)
+admin.site.register(Comments)

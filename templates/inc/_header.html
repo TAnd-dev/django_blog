@@ -9,7 +9,7 @@
         </button>
         <a class="navbar-brand" href="{% url 'blog' %}">Django blog</a>
         <div class="collapse navbar-collapse" id="navbarTogglerDemo03">
-            {% cache 20 headers %}
+            {% cache 2000 headers %}
             <ul class="navbar-nav me-auto mb-2 mb-lg-0">
                 <li class="nav-item">
                     <a class="nav-link" href="{% url 'blog' %}">Главная</a>

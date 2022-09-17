@@ -1,8 +1,10 @@
 from django.db.models import F
-from django.shortcuts import render
+from django.urls import reverse
 from django.views.generic import ListView, DetailView
+from django.views.generic.edit import FormMixin
 
-from blog.models import Post, Category, Tag
+from blog.forms import CommentForm
+from blog.models import Post, Category, Tag, Comments
 
 sort_list = {
     'created_date': 'По времени',
@@ -74,15 +76,46 @@ class PostByTag(ListView):
         return context
 
 
-class PostDetail(DetailView):
+class PostDetail(FormMixin, DetailView):
     model = Post
+    form_class = CommentForm
+
+    def get_success_url(self, **kwargs):
+        return reverse('post_detail', kwargs={'slug': self.get_object().slug})
 
     def get_context_data(self, *, object_list=None, **kwargs):
         context = super().get_context_data(**kwargs)
         self.object.views = F('views') + 1
         self.object.save()
         self.object.refresh_from_db()
+        context['form'] = CommentForm()
+        context['comments'] = Comments.objects.filter(post=self.get_object())
         return context
+
+    def post(self, request, *args, **kwargs):
+        form = self.get_form()
+        print(request.POST.get('parent_id'))
+
+        if form.is_valid():
+            return self.form_valid(form)
+        else:
+            return self.form_invalid(form)
+
+    def form_valid(self, form):
+        comment = form.save(commit=False)
+        comment.author = self.request.user
+        comment.post = self.get_object()
+
+        try:
+            parent_id = self.request.POST.get('parent_id')
+        except:
+            parent_id = None
+
+        if parent_id:
+            parent = Comments.objects.get(pk=parent_id)
+            comment.parent = parent
+        comment.save()
+        return super(PostDetail, self).form_valid(form)
 
 
 class Search(ListView):

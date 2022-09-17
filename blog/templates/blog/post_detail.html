@@ -22,6 +22,49 @@
         <a href="#">Лайк ({{ post.likes }})</a>
         <a href="#">Дизлайк ({{ post.dislikes }})</a>
     </div>
+    <div>
+        {% if request.user.is_authenticated %}
+        <h3 class="my-3">Написать комментарий</h3>
+        <form method="post">
+            {% csrf_token %}
+            {{ form.text }}
+            <button type="submit" class="btn btn-primary mt-2">Отправить</button>
+        </form>
+        {% else %}
+        <p class="my-3">Необходимо <a href="{% url 'login' %}">авторизоваться</a>, чтобы оставлять комментарии</p>
+        {% endif %}
+        <h3 class="my-3">Комментарии</h3>
+        {% for comment in comments %}
+        {% if not comment.parent %}
+        <div class="border-top border-dark">
+            <p class="mb-1"><span class="fst-italic">{{ comment.author }}</span>-<span
+                    class="text-muted">{{ comment.created_date }}</span></p>
+            <p class="mb-1">{{ comment.text }}</p>
+            <a class="link-dark" data-bs-toggle="collapse" href="#comment_{{ comment.pk }}" role="button"
+               aria-expanded="false" aria-controls="collapseExample">
+                Ответить
+            </a>
+            <div class="collapse ms-2" id="comment_{{ comment.pk }}">
+                <form method="post">
+                    {% csrf_token %}
+                    {{ form.text }}
+                    <button type="submit" class="btn btn-primary mt-2" name="parent_id" value="{{ comment.id }}">
+                        Ответить
+                    </button>
+                </form>
+            </div>
+            {% for reply in comment.replies.all %}
+            <div class="ms-3 border-top">
+                <p class="mb-1"><span class="fst-italic">{{ reply.author }}</span>-<span
+                        class="text-muted">{{ reply.created_date }}</span></p>
+                <p class="mb-1">{{ reply.text }}</p>
+            </div>
+            {% endfor %}
+        </div>
+        {% endif %}
+        {% endfor %}
+
+    </div>
 </div>
 {% endblock %}
 

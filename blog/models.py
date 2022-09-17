@@ -111,6 +111,41 @@ class Tag(models.Model):
         ordering = ['tag_name']
 
 
+class Comments(models.Model):
+    post = models.ForeignKey(
+        Post,
+        on_delete=models.CASCADE,
+        verbose_name='Пост',
+        related_name='post_comments'
+    )
+    text = models.TextField(
+        verbose_name='Текст комментария'
+    )
+    author = models.ForeignKey(
+        'auth.User',
+        on_delete=models.CASCADE,
+        verbose_name='author',
+        related_name='user_comments'
+    )
+    parent = models.ForeignKey(
+        'self',
+        on_delete=models.CASCADE,
+        blank=True,
+        null=True,
+        related_name='replies'
+    )
+    created_date = models.DateTimeField(
+        verbose_name='Дата создания',
+        auto_now_add=True
+    )
+
+    class Meta:
+        ordering = ['created_date']
+
+    def __str__(self):
+        return f'{self.author}: {self.text}'
+
+
 # class UserPostRelation(models.Model):
 #
 #     RATE_CHOICES = (
