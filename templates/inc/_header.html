@@ -49,6 +49,11 @@
                 <input class="form-control me-2" type="search" name="search" placeholder="Поиск" aria-label="Поиск">
                 <button class="btn btn-outline-success" type="submit">Поиск</button>
             </form>
+            {% if request.user.is_authenticated %}
+            <a href="#" class="mx-3 nav-link navbar-nav">Профиль</a>
+            {% else %}
+            <a href="{% url 'login' %}" class="mx-3 nav-link navbar-nav">Войти</a>
+            {% endif %}
         </div>
     </div>
 </nav>

@@ -11,7 +11,7 @@ sort_list = {
 }
 
 
-def base_blog(template_name='blog/blog.html', context_object_name='posts', paginate_by=1, allow_empty=False):
+def base_blog(template_name='blog/blog.html', context_object_name='posts', paginate_by=10, allow_empty=False):
     return template_name, context_object_name, paginate_by, allow_empty
 
 
