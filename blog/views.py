@@ -94,7 +94,6 @@ class PostDetail(FormMixin, DetailView):
 
     def post(self, request, *args, **kwargs):
         form = self.get_form()
-        print(request.POST.get('parent_id'))
 
         if form.is_valid():
             return self.form_valid(form)

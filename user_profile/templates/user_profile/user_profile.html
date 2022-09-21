@@ -1,0 +1,34 @@
+{% extends 'base.html' %}
+{% block content %}
+<div class="ms-5 mt-4 col">
+    <div>
+        <div class="row">
+            <div class="col-4 text-center">
+                <img class="rounded-circle"
+                     src="{% if user.profile_pic %} {{ user.profile_pic.url }} {% else %} https://images.unsplash.com/photo-1659478039681-0ebbf73c7fb9?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1332&q=80 {% endif %}"
+                     alt=""
+                     style="object-fit: cover; width: 150px; height: 150px">
+
+                <span class="fs-4 ms-2">{{ user }}</span>
+            </div>
+            <form class="col" method="post" enctype="multipart/form-data">
+                {% csrf_token %}
+                {{ form.profile_pic }}
+                <button type="submit" class="btn btn-primary mt-2">Сохранить</button>
+            </form>
+        </div>
+    </div>
+    <div class="mt-3 ms-5">
+        <h5>Личные данные</h5>
+        <ul class="list-group w-50 mb-2">
+            <li class="list-group-item"><span class="h6">Username:</span> {{ user.user }}</li>
+            <li class="list-group-item"><span class="h6">Email:</span> {{ user.user.email }}</li>
+            <li class="list-group-item"><span class="h6">Имя:</span> {{ user.user.first_name }}</li>
+            <li class="list-group-item"><span class="h6">Фамилия:</span> {{ user.user.last_name }}</li>
+        </ul>
+        <a class="link-warning ms-4" href="{% url 'user_profile_edit' %}">Изменить данные</a>
+        <a class="link-danger ms-4" href="{% url 'logout' %}">Выйти</a>
+    </div>
+</div>
+
+{% endblock %}

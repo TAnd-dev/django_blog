@@ -10,8 +10,9 @@ def user_reg(request):
     if request.method == 'POST':
         form = UserRegisterForm(request.POST)
         if form.is_valid():
-            form.save()
+            user = form.save()
             messages.success(request, 'Вы успешно зарегестрировались')
+            login(request, user)
             return redirect('blog')
         else:
             messages.error(request, 'Ошибка регистрации')
