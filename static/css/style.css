@@ -11,11 +11,14 @@
     border-radius: var(--bs-card-inner-border-radius);
 }
 
+
 .post-img{
     object-fit: cover;
     max-height: 230px;
 }
 
+
 .post-content img{
-    width: 100%;
+    width: 100%!important;
+    height: auto!important;
 }

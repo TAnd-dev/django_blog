@@ -1,4 +1,6 @@
+from unidecode import unidecode
 from django.db import models
+from django.template.defaultfilters import slugify
 from django.urls import reverse
 
 
@@ -64,6 +66,10 @@ class Post(models.Model):
 
     def get_absolute_url(self):
         return reverse('post_detail', kwargs={'slug': self.slug})
+
+    def save(self, *args, **kwargs):
+        self.slug = slugify(unidecode(str(self.title)))
+        return super(Post, self).save(*args, **kwargs)
 
     class Meta:
         ordering = ['-created_date']

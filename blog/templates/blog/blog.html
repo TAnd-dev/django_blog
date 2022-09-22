@@ -2,15 +2,20 @@
 
 {% block content %}
 <div class="col">
-    <div class="row row-cols-3">
-        <div class="row col-8">
+    <div class="row">
+        <div class="col-4 mt-2">
             {% if request.resolver_match.url_name == 'category' %}
-            <h4>Категория: {{ title }}</h4>
+            <h5>Категория: {{ title }}</h5>
             {% elif request.resolver_match.url_name == 'tag' %}
-            <h4>Тэг: {{ title }}</h4>
+            <h5>Тэг: {{ title }}</h5>
             {% endif %}
         </div>
-        <div class="dropdown ms-4 mb-2 d-flex justify-content-end">
+
+        <div class="col-8 mb-3">
+            {% if request.user.is_authenticated %}
+            <a class="me-2 btn btn-success" href="{% url 'add_post' %}">Добавить пост</a>
+            <a class="me-2 btn btn-primary" href="{% url 'my_posts' %}">Мои статьи</a>
+            {% endif %}
             <button class="btn btn-dark dropdown-toggle" type="button" id="dropdownMenuButton1"
                     data-bs-toggle="dropdown" aria-expanded="false">
                 {{ sort }}

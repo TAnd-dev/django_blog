@@ -44,6 +44,9 @@ INSTALLED_APPS = [
     # ckeditor
     'ckeditor',
 
+    # django_summernote
+    'django_summernote',
+
     'user_auth',
     'user_profile',
     'blog',
@@ -210,7 +213,7 @@ CKEDITOR_CONFIGS = {
         # 'mathJaxLib': '//cdn.mathjax.org/mathjax/2.2-latest/MathJax.js?config=TeX-AMS_HTML',
         'tabSpaces': 4,
         'extraPlugins': ','.join([
-            'uploadimage', # the upload image feature
+            'uploadimage',  # the upload image feature
             # your extra plugins here
             'div',
             'autolink',
@@ -228,6 +231,26 @@ CKEDITOR_CONFIGS = {
     }
 }
 
+SUMMERNOTE_CONFIG = {
+    'iframe': False,
+    'summernote': {
+        # As an example, using Summernote Air-mode
+        'airMode': False,
+        'width': '100%',
+        'height': '600',
+        'toolbar': [
+            ['style', ['bold', 'italic', 'underline', 'clear']],
+            ['font', ['strikethrough', 'superscript', 'subscript']],
+            ['fontsize', ['fontsize']],
+            ['color', ['color']],
+            ['para', ['ul', 'ol', 'paragraph']],
+            ['height', ['height']],
+            ['insert', ['link', 'picture', 'video']],
+        ]
+
+    },
+    'disable_attachment': False,
+}
 
 CACHES = {
     'default': {

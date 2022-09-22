@@ -1,9 +1,9 @@
 from django.db.models import F
 from django.urls import reverse
 from django.views.generic import ListView, DetailView
-from django.views.generic.edit import FormMixin
+from django.views.generic.edit import FormMixin, CreateView
 
-from blog.forms import CommentForm
+from blog.forms import CommentForm, PostForm
 from blog.models import Post, Category, Tag, Comments
 
 sort_list = {
@@ -115,6 +115,35 @@ class PostDetail(FormMixin, DetailView):
             comment.parent = parent
         comment.save()
         return super(PostDetail, self).form_valid(form)
+
+
+class MyPosts(ListView):
+    template_name, context_object_name, paginate_by, allow_empty = base_blog(allow_empty=True)
+
+    def get_queryset(self):
+        sort = self.request.GET.get('sort')
+        if sort:
+            return Post.objects.filter(author=self.request.user).order_by(f'-{sort}')
+        else:
+            return Post.objects.filter(author=self.request.user)
+
+    def get_context_data(self, *, object_list=None, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context = get_context_data_sort(self, context)
+        context['title'] = 'Мои посты'
+        return context
+
+
+class AddPost(CreateView):
+    model = Post
+    form_class = PostForm
+    template_name = 'blog/add_post.html'
+
+    def form_valid(self, form):
+        post = form.save(commit=False)
+        post.author = self.request.user
+        post.save()
+        return super(AddPost, self).form_valid(form)
 
 
 class Search(ListView):
