@@ -26,6 +26,7 @@
 {% include 'inc/_header.html' %}
 <div class="container-fluid">
     <div class="row">
+        {% block left_sidebar %} {% endblock %}
         {% block content %} {% endblock %}
         {% block sidebar %} {% endblock %}
     </div>

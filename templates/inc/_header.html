@@ -24,7 +24,7 @@
                     </div>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" href="#">Магазин</a>
+                    <a class="nav-link" href="{% url 'shop' %}">Магазин</a>
                 </li>
                 <li class="nav-item">
                     <a class="nav-link" href="#">Услуги</a>
@@ -50,7 +50,7 @@
                 <button class="btn btn-outline-success" type="submit">Поиск</button>
             </form>
             {% if request.user.is_authenticated %}
-            <a href="{% url 'user_profile' %}" class="mx-3 nav-link navbar-nav">Профиль</a>
+            <a href="{% url 'user_profile' %}" class="mx-3 nav-link navbar-nav">{{ request.user }}</a>
             {% else %}
             <a href="{% url 'login' %}" class="mx-3 nav-link navbar-nav">Войти</a>
             {% endif %}

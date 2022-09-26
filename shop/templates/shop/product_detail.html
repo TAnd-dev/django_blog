@@ -1,0 +1,20 @@
+{% extends 'shop/base_shop.html' %}
+
+{% block content %}
+<div class="col-md-9 g-4 post-content">
+    {% for category in current_categories %}
+    <a href="{{ category.get_absolute_url }}" class="text-decoration-none">{{ category }}</a>
+    {% if not forloop.last %}>{% endif %}
+    {% empty %}
+    {% endfor %}
+    <h2 class="text-center ">{{ product.name }}</h2>
+    <h5>Продавец: {{ product.salesman }}</h5>
+    {% if product.photo %}
+    <p><img src="{{ product.photo.url }}" class="card-img-top" alt=""></p>
+    {% endif %}
+    <h5>Цена: {{ product.price }}</h5>
+    {% autoescape off %}
+    {{ product.description }}
+    {% endautoescape %}
+</div>
+{% endblock %}

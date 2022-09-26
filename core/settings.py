@@ -47,9 +47,13 @@ INSTALLED_APPS = [
     # django_summernote
     'django_summernote',
 
+    # django mptt
+    'mptt',
+
     'user_auth',
     'user_profile',
     'blog',
+    'shop',
 ]
 
 MIDDLEWARE = [
