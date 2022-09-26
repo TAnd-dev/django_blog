@@ -1,3 +1,5 @@
+from datetime import datetime
+
 from django.db import models
 from django.db import models
 from django.urls import reverse
@@ -81,4 +83,29 @@ class Product(models.Model):
     def get_absolute_url(self):
         return reverse('product_detail', kwargs={'slug': self.slug})
 
-#
+
+class Basket(models.Model):
+    user = models.OneToOneField(
+        'auth.User',
+        verbose_name='Пользователь',
+        on_delete=models.CASCADE,
+        related_name='basket'
+    )
+    quantity = models.IntegerField(
+        verbose_name='Количество',
+        default=0
+    )
+    products = models.ManyToManyField(
+        Product,
+        verbose_name='Продукты',
+        blank=True
+    )
+    created_date = models.DateTimeField(
+        auto_now_add=True,
+    )
+
+    def __str__(self):
+        return f'{self.user}'
+
+
+

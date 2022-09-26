@@ -1,7 +1,7 @@
 from django.contrib import admin
 from mptt.admin import MPTTModelAdmin
 
-from shop.models import Product, Category
+from shop.models import Product, Category, Basket
 
 
 class ShopAdmin(admin.ModelAdmin):
@@ -16,3 +16,4 @@ class CategoryAdmin(admin.ModelAdmin):
 
 admin.site.register(Product, ShopAdmin)
 admin.site.register(Category, MPTTModelAdmin)
+admin.site.register(Basket)
