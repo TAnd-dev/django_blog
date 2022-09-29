@@ -1,6 +1,3 @@
-from datetime import datetime
-
-from django.db import models
 from django.db import models
 from django.urls import reverse
 from mptt.fields import TreeManyToManyField
@@ -57,8 +54,10 @@ class Product(models.Model):
     description = models.TextField(
         verbose_name='Описание'
     )
-    price = models.FloatField(
+    price = models.DecimalField(
         verbose_name='Цена',
+        max_digits=12,
+        decimal_places=2,
         default=0
     )
     photo = models.ImageField(
@@ -78,14 +77,14 @@ class Product(models.Model):
         ordering = ['created_date']
 
     def __str__(self):
-        return f'{self.name}'
+        return f'{self.name}: {self.price}'
 
     def get_absolute_url(self):
         return reverse('product_detail', kwargs={'slug': self.slug})
 
 
 class Basket(models.Model):
-    user = models.OneToOneField(
+    user = models.ForeignKey(
         'auth.User',
         verbose_name='Пользователь',
         on_delete=models.CASCADE,
@@ -95,10 +94,12 @@ class Basket(models.Model):
         verbose_name='Количество',
         default=0
     )
-    products = models.ManyToManyField(
+    product = models.ForeignKey(
         Product,
         verbose_name='Продукты',
-        blank=True
+        on_delete=models.CASCADE,
+        blank=True,
+        null=True
     )
     created_date = models.DateTimeField(
         auto_now_add=True,
@@ -107,5 +108,52 @@ class Basket(models.Model):
     def __str__(self):
         return f'{self.user}'
 
+    def total_price(self):
+        return self.quantity * self.product.__getattribute__('price')
 
 
+class Purchase(models.Model):
+    user = models.ForeignKey(
+        'auth.User',
+        on_delete=models.CASCADE,
+        verbose_name='Покупатель',
+        related_name='purchase'
+    )
+    products = models.ManyToManyField(
+        Product,
+        verbose_name='Продукты',
+        related_name='purchase',
+    )
+    total_price = models.DecimalField(
+        max_digits=12,
+        decimal_places=2,
+        verbose_name='Итоговая цена'
+    )
+    created_date = models.DateTimeField(
+        auto_now_add=True,
+        verbose_name='Дата создания'
+    )
+    email = models.EmailField(
+        verbose_name='Электронная почта'
+    )
+    tel = models.IntegerField(
+        verbose_name='Телефон'
+    )
+    country = models.CharField(
+        max_length=24,
+        verbose_name='Страна'
+    )
+    city = models.CharField(
+        max_length=32,
+        verbose_name='Город'
+    )
+    street = models.CharField(
+        max_length=64,
+        verbose_name='Улица'
+    )
+
+    class Meta:
+        ordering = ('-created_date',)
+
+    def __str__(self):
+        return f'{self.user}'

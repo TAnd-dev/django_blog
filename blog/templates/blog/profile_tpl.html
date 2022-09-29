@@ -3,6 +3,6 @@
         <a href="{% url 'user_profile' %}" class="dropdown-item">{{ request.user }}</a>
     </li>
     <li>
-        <a href="#" class="dropdown-item" type="button">Корзина ({{ count_basket }})</a>
+        <a href="{% url 'basket' %}" class="dropdown-item" type="button">Корзина ({{ count_basket }})</a>
     </li>
 </ul>

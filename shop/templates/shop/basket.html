@@ -1,0 +1,81 @@
+{% extends 'base.html' %}
+{% block content %}
+
+<div class="row pb-3 border-bottom border-2 border-dark">
+    <div class="col-3 text-center">
+        <span class="h5">Фото</span>
+    </div>
+    <div class="col-3 text-center">
+        <span class="h5">Продукт</span>
+    </div>
+    <div class="col-2 text-center">
+        <span class="h5">Кол-во</span>
+    </div>
+    <div class="col-2 text-center">
+        <span class="h5">Цена</span>
+    </div>
+</div>
+
+{% for basket in baskets %}
+<div class="row border-bottom border-2 py-3">
+    <div class="col-3 text-center">
+        <img src="{{ basket.product.photo.url }}" class="card-img-top" alt="" style="height: 100px; width: 150px">
+    </div>
+    <div class="col-3 text-center">
+        {{ basket.product.name }}
+    </div>
+    <div class="col-2 text-center">
+        {{ basket.quantity }}
+    </div>
+    <div class="col-2 text-center">
+        {{ basket.total_price }}
+    </div>
+    <div class="col-2 text-center">
+        <a href="{% url 'change_basket' pk=basket.pk %}" class="btn btn-primary my-1">Изменить</a>
+        <a href="{% url 'basket_delete' pk=basket.pk %}" class="btn btn-danger my-1">Удалить</a>
+    </div>
+</div>
+{% endfor %}
+<div class="col">
+    <span class="m-3 h5">Итоговая цена: {{ total_price }} руб</span>
+</div>
+
+
+<form class="ps-5 my-3" method="post">
+     {% csrf_token %}
+    <div class="row">
+        <div class="mb-3 col-md-5 col-12">
+            <label for="inputEmail" class="col-form-label">Электронная почта</label>
+            <div style="width: 250px">
+                <input class="form-control" type="email" name="email" maxlength="254" required="" id="inputEmail">
+            </div>
+        </div>
+        <div class="mb-3 col-md-5 col-12">
+            <label for="inputTel" class="col-form-label">Телефон</label>
+            <div style="width: 250px">
+                <input class="form-control" type="number" name="tel" required="" id="inputTel">
+            </div>
+        </div>
+        <div class="mb-3 col-md-5 col-12">
+            <label for="inputCountry" class="col-form-label">Страна</label>
+            <div style="width: 250px">
+                <input class="form-control" type="text" name="country" maxlength="24" required="" id="inputCountry">
+            </div>
+        </div>
+        <div class="mb-3 col-md-5 col-12">
+            <label for="inputCity" class="col-form-label">Город</label>
+            <div style="width: 250px">
+                <input class="form-control" type="text" name="city" maxlength="32" required="" id="inputCity">
+            </div>
+        </div>
+        <div class="mb-3 col-md-5 col-12">
+            <label for="inputStreet" class="col-form-label">Улица</label>
+            <div style="width: 250px">
+                <input class="form-control" type="text" name="street" maxlength="64" required="" id="inputStreet">
+            </div>
+        </div>
+    </div>
+    <button type="submit" class="btn btn-primary" style="width: 150px; height: 40px">Заказать</button>
+</form>
+
+{% endblock %}

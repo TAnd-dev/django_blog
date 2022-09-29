@@ -13,8 +13,8 @@
     <p><img src="{{ product.photo.url }}" class="card-img-top" alt=""></p>
     {% endif %}
     <span class="h5">Цена: {{ product.price }}</span>
-    <button type="submit" class="btn btn-primary">Купить</button>
-    {% if product in basket_products %}
+    <a href="{% url 'buy_product' slug=product.slug %}" class="btn btn-primary">Купить</a>
+    {% if product.slug in basket_products %}
     <a href="{% url 'add_to_basket' slug=product.slug %}" class="btn btn-danger">Удалить из корзины</a>
     {% else %}
     <a href="{% url 'add_to_basket' slug=product.slug %}" class="btn btn-success">Добавить в корзину</a>

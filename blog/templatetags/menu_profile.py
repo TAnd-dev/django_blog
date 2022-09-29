@@ -7,5 +7,6 @@ register = template.Library()
 
 @register.inclusion_tag('blog/profile_tpl.html')
 def show_menu_profile(request):
-    categories = Basket.objects.get(user=request.user).quantity
-    return {'count_basket': categories, 'request': request}
+    baskets = Basket.objects.filter(user=request.user)
+    baskets = baskets.count if baskets else 0
+    return {'count_basket': baskets, 'request': request}
