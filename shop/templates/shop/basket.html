@@ -1,6 +1,7 @@
 {% extends 'base.html' %}
 {% block content %}
 
+{% if baskets %}
 <div class="row pb-3 border-bottom border-2 border-dark">
     <div class="col-3 text-center">
         <span class="h5">Фото</span>
@@ -77,5 +78,8 @@
     </div>
     <button type="submit" class="btn btn-primary" style="width: 150px; height: 40px">Заказать</button>
 </form>
+{% else %}
+<p>В корзине пусто :(</p>
+{% endif %}
 
 {% endblock %}

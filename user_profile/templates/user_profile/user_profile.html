@@ -26,6 +26,7 @@
             <li class="list-group-item"><span class="h6">Имя:</span> {{ user.user.first_name }}</li>
             <li class="list-group-item"><span class="h6">Фамилия:</span> {{ user.user.last_name }}</li>
         </ul>
+        <a class="link-primary ms-4" href="{% url 'history_purchases' %}">История заказов</a>
         <a class="link-success ms-4" href="{% url 'add_post' %}">Добавить статью</a>
         <a class="link-warning ms-4" href="{% url 'user_profile_edit' %}">Изменить данные</a>
         <a class="link-danger ms-4" href="{% url 'logout' %}">Выйти</a>

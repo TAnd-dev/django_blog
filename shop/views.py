@@ -1,3 +1,5 @@
+from django.contrib.auth.decorators import login_required
+from django.contrib.auth.mixins import LoginRequiredMixin
 from django.db.models import Count, Sum, F
 from django.http import HttpResponseRedirect
 from django.shortcuts import render, redirect
@@ -45,7 +47,7 @@ class ProductDetail(DetailView):
         return context
 
 
-class BasketView(CreateView):
+class BasketView(LoginRequiredMixin, CreateView):
     model = Purchase
     fields = ('email', 'tel', 'country', 'city', 'street')
     template_name = 'shop/basket.html'
@@ -65,7 +67,7 @@ class BasketView(CreateView):
                                            city=city, street=street)
         purchase.products.add(*products)
         Basket.objects.filter(user=self.request.user).delete()
-        return redirect('shop')
+        return redirect('history_purchases')
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
@@ -90,6 +92,7 @@ def change_basket(request, pk):
     return render(request, 'shop/change_basket.html', {'form': form, 'product': basket.product.name})
 
 
+@login_required
 def add_to_basket(request, slug):
     product = Product.objects.get(slug=slug)
     baskets = Basket.objects.filter(user=request.user, product=product)
@@ -102,6 +105,7 @@ def add_to_basket(request, slug):
     return HttpResponseRedirect(request.META.get('HTTP_REFERER'))
 
 
+@login_required
 def buy_product(request, slug):
     product = Product.objects.get(slug=slug)
     baskets = Basket.objects.filter(user=request.user, product=product)
@@ -113,7 +117,16 @@ def buy_product(request, slug):
     return redirect('basket')
 
 
+@login_required
 def basket_delete(request, pk):
     product = Basket.objects.get(id=pk)
     product.delete()
     return HttpResponseRedirect(request.META.get('HTTP_REFERER'))
+
+
+class HistoryPurchases(ListView):
+    model = Purchase
+    template_name = 'shop/history_purchases.html'
+    context_object_name = 'purchases'
+    paginate = 10
+    allow_empty = True

@@ -1,0 +1,87 @@
+{% extends 'base.html' %}
+{% block content %}
+<h4>История заказов</h4>
+{% for purchase in purchases %}
+<div class="row my-3 ps-5 pb-3 border-bottom border-dark">
+    <div class="col-2">
+        <span class="h5">id</span>
+    </div>
+    <div class="col-10">
+        {{ purchase.id }}
+    </div>
+    <div class="col-2">
+        <span class="h5">Итоговая цена</span>
+    </div>
+    <div class="col-10">
+        {{ purchase.total_price }}
+    </div>
+    <div class="col-2">
+        <span class="h5">Дата</span>
+    </div>
+    <div class="col-10">
+        {{ purchase.created_date }}
+    </div>
+    <div class="col-2">
+        <span class="h5">Телефон</span>
+    </div>
+    <div class="col-10">
+        {{ purchase.tel }}
+    </div>
+    <div class="col-2">
+        <span class="h5">Электронная почта</span>
+    </div>
+    <div class="col-10">
+        {{ purchase.email }}
+    </div>
+    <div class="col-2">
+        <span class="h5">Страна</span>
+    </div>
+    <div class="col-10">
+        {{ purchase.country }}
+    </div>
+    <div class="col-2">
+        <span class="h5">Город</span>
+    </div>
+    <div class="col-10">
+        {{ purchase.city }}
+    </div>
+    <div class="col-2">
+        <span class="h5">Улица</span>
+    </div>
+    <div class="col-10">
+        {{ purchase.street }}
+    </div>
+</div>
+{% empty %}
+Вы ничего не заказывали :(
+{% endfor %}
+{% if page_obj.has_other_pages %}
+    <nav class="mt-5" aria-label="Навигация">
+        <ul class="pagination justify-content-center">
+            {% if page_obj.has_previous %}
+            <li class="page-item">
+                <a class="page-link" href="?{{ search }}page={{ page_obj.previous_page_number }}"
+                   aria-label="Предыдущая">
+                    <span aria-hidden="true">&laquo;</span>
+                </a>
+            </li>
+            {% endif %}
+            {% for p in page_obj.paginator.page_range %}
+            {% if page_obj.number == p %}
+            <li class="page-item active"><a class="page-link">{{ p }}</a></li>
+            {% elif p > page_obj.number|add:-3 and p < page_obj.number|add:3 %}
+            <li class="page-item"><a class="page-link" href="?{{ search }}page={{ p }}">{{ p }}</a></li>
+            {% endif %}
+            {% endfor %}
+
+            {% if page_obj.has_next %}
+            <li class="page-item">
+                <a class="page-link" href="?{{ search }}page={{ page_obj.next_page_number }}" aria-label="Следующая">
+                    <span aria-hidden="true">&raquo;</span>
+                </a>
+            </li>
+            {% endif %}
+        </ul>
+    </nav>
+    {% endif %}
+{% endblock %}
