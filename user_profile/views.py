@@ -47,6 +47,17 @@ class UserProfileEdit(LoginRequiredMixin, UpdateView):
         return reverse('user_profile')
 
 
+class UserPersonalDataEdit(LoginRequiredMixin, UpdateView):
+    fields = ('country', 'city', 'tel')
+    template_name = 'user_profile/user_personal_data_edit.html'
+
+    def get_object(self, **kwargs):
+        return UserProfile.objects.get(user=self.request.user)
+
+    def get_success_url(self, **kwargs):
+        return reverse('user_profile')
+
+
 class UserPasswordChangeView(LoginRequiredMixin, PasswordChangeView):
     form_class = PasswordChangeCustomForm
     template_name = 'user_profile/user_profile_edit.html'

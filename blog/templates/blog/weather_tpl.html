@@ -1,0 +1,18 @@
+{% if error %}
+<span class="nav-link">{{ error }}</span>
+{% else %}
+<div class="dropdown">
+    <button class="btn nav-link p-0" type="button" id="dropdownMenuWeather"
+            data-bs-toggle="dropdown" aria-expanded="false">
+        <a class="nav-link" href="">
+            <img src="http://openweathermap.org/img/w/{{ icon }}.png" style="width: 30px; height: 30px" alt="weather">
+            {{ temp }}<sup>o</sup>
+        </a>
+    </button>
+    <ul class="dropdown-menu bg-dark border-0 ms-2" aria-labelledby="dropdownMenuWeather">
+        <li>
+            <a class="nav-link">Город: {{ city }}</a>
+        </li>
+    </ul>
+</div>
+{% endif %}

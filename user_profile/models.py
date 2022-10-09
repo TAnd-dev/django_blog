@@ -17,6 +17,23 @@ class UserProfile(models.Model):
         null=True,
         blank=True
     )
+    tel = models.IntegerField(
+        verbose_name='Телефон',
+        null=True,
+        blank=True
+    )
+    country = models.CharField(
+        max_length=24,
+        verbose_name='Страна',
+        null=True,
+        blank=True
+    )
+    city = models.CharField(
+        max_length=32,
+        verbose_name='Город',
+        null=True,
+        blank=True
+    )
 
     def __str__(self):
         return f'{self.user}'
