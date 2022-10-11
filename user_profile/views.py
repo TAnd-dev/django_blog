@@ -1,11 +1,18 @@
-from django.contrib.auth.decorators import login_required, permission_required
+from django.contrib import messages
+from django.contrib.auth.decorators import login_required
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.contrib.auth.models import User
+from django.contrib.auth.tokens import default_token_generator
 from django.contrib.auth.views import PasswordChangeView
+from django.contrib.sites.shortcuts import get_current_site
+from django.core.exceptions import ValidationError
+from django.core.mail import send_mail
 from django.shortcuts import render, redirect, get_object_or_404
 from django.urls import reverse, reverse_lazy
-from django.views.generic import DetailView
-from django.views.generic.edit import FormMixin, UpdateView
+from django.utils.encoding import force_bytes
+from django.utils.http import urlsafe_base64_decode, urlsafe_base64_encode
+from django.views import View
+from django.views.generic.edit import UpdateView
 
 from user_profile.forms import PasswordChangeCustomForm, UpdateProfilePhotoForm
 from user_profile.models import UserProfile
@@ -45,6 +52,54 @@ class UserProfileEdit(LoginRequiredMixin, UpdateView):
 
     def get_success_url(self, **kwargs):
         return reverse('user_profile')
+
+    def form_valid(self, form):
+        email = form.cleaned_data['email']
+
+        if email:
+
+            try:
+                user = User.objects.get(email=email)
+            except Exception:
+                user = None
+
+            if user:
+                messages.error(self.request, 'Пользователь с таким электронным адресом уже существует')
+                return redirect('user_profile_edit')
+
+            protocol = 'http://'
+            domain = get_current_site(self.request).domain
+            uidb64 =urlsafe_base64_encode(force_bytes(self.request.user.pk))
+            token = default_token_generator.make_token(self.request.user)
+            url = f'{protocol}{domain}/profile/verify_email/{uidb64}/{token}'
+            mail = send_mail('Подтверждение Email', f'Ссылка для подтверждения: {url}', 'your email', [email])
+            if mail:
+                messages.success(self.request, 'На вашу почту отправлено письмо с подтверждением')
+        else:
+            self.request.user.profile.email_verify = False
+            self.request.user.profile.save()
+        return super().form_valid(form)
+
+
+class VerifyEmail(View):
+    def get(self, request, uidb64, token):
+        try:
+            uid = urlsafe_base64_decode(uidb64).decode()
+            user = User.objects.get(pk=uid)
+        except (TypeError, ValueError, OverflowError, User.DoesNotExist, ValidationError):
+            user = None
+
+        if user is not None and default_token_generator.check_token(user, token):
+            user.profile.email_verify = True
+            user.profile.save()
+            messages.success(self.request, 'Ваша почта успешно подтверждена')
+            return redirect('user_profile')
+
+        return redirect('verify_error')
+
+
+def verify_error(request):
+    return render(request, 'user_profile/verify_error.html')
 
 
 class UserPersonalDataEdit(LoginRequiredMixin, UpdateView):

@@ -11,11 +11,13 @@ def user_reg(request):
         form = UserRegisterForm(request.POST)
         if form.is_valid():
             user = form.save()
-            messages.success(request, 'Вы успешно зарегестрировались')
+            message = 'Вы успешно зарегестрировались. Для большего функционала привяжите почту в настройках профиля'
+            messages.success(request, message)
             login(request, user)
             return redirect('blog')
         else:
-            messages.error(request, 'Ошибка регистрации')
+            message = 'Ошибка регистрации'
+            messages.error(request, message)
     else:
         form = UserRegisterForm()
     return render(request, 'user_auth/auth.html', {'form': form})

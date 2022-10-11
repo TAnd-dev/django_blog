@@ -10,7 +10,8 @@ def upload_profile_photo(instance, filename):
 class UserProfile(models.Model):
     user = models.OneToOneField(
         User,
-        on_delete=models.CASCADE
+        on_delete=models.CASCADE,
+        related_name='profile'
     )
     profile_pic = models.ImageField(
         upload_to=upload_profile_photo,
@@ -33,6 +34,10 @@ class UserProfile(models.Model):
         verbose_name='Город',
         null=True,
         blank=True
+    )
+    email_verify = models.BooleanField(
+        default=False,
+        verbose_name='Email Verified'
     )
 
     def __str__(self):
