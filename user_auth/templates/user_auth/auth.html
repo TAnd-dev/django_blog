@@ -34,7 +34,7 @@
             {{ field.errors }}
         </div>
         {% endfor %}
-        <p class="col-sm-3 mx-auto mt-3">Забыли<a href="{% url 'login' %}"> логин </a> или <a href="{% url 'login' %}">пароль</a>?</p>
+        <p class="col-sm-3 mx-auto mt-3">Забыли <a href="{% url 'password_reset' %}">пароль</a>?</p>
         <button type="submit" class="d-block mx-auto btn btn-primary col-sm-3">Логин</button>
     </form>
     <p class="col-sm-3 mx-auto mt-3">У вас нет аккаунта?<a href="{% url 'reg' %}"> Зарегистрироваться</a></p>
