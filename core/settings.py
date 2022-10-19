@@ -144,7 +144,7 @@ USE_L10N = True
 USE_TZ = True
 
 # sending mails
-EMAIL_HOST = 'smtp.gmail.com'
+EMAIL_HOST = 'smpt'
 EMAIL_HOST_USER = 'your email host'
 EMAIL_HOST_PASSWORD = 'your password'
 EMAIL_PORT = 587

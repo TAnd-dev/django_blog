@@ -10,7 +10,6 @@ from user_profile.models import UserProfile
 def create_profile(sender, instance, created, **kwargs):
     if created:
         UserProfile.objects.create(user=instance)
-        Basket.objects.create(user=instance)
 
 
 @receiver(post_save, sender=User)
