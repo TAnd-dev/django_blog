@@ -2,3 +2,23 @@
     color: red;
     list-style: none;
 }
+
+.my-card-img-overlay{
+    position: absolute;
+    top: 0;
+    left: 0;
+    padding: var(--bs-card-img-overlay-padding);
+    border-radius: var(--bs-card-inner-border-radius);
+}
+
+
+.post-img{
+    object-fit: cover;
+    max-height: 230px;
+}
+
+
+.post-content img{
+    width: 100%!important;
+    height: auto!important;
+}

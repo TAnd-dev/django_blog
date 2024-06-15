@@ -1,0 +1,29 @@
+{% extends 'base.html' %}
+{% block content %}
+
+
+<form class="ms-5 col-11" method="post">
+    <div class="row mb-3">
+        {% csrf_token %}
+        <label for="inputLogin" class="col-sm-2 col-form-label">Страна</label>
+        <div class="col-sm-10">
+            {{ form.country }}
+        </div>
+    </div>
+    <div class="row mb-3">
+        <label for="inputEmail" class="col-sm-2 col-form-label">Город</label>
+        <div class="col-sm-10">
+            {{ form.city }}
+        </div>
+    </div>
+    <div class="row mb-3">
+        <label for="inputFirstName" class="col-sm-2 col-form-label">Телефон</label>
+        <div class="col-sm-10">
+            {{ form.tel }}
+        </div>
+    </div>
+
+    <button type="submit" class="btn btn-primary">Изменить</button>
+</form>
+
+{% endblock %}

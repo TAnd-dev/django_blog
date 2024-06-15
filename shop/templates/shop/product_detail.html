@@ -1,0 +1,26 @@
+{% extends 'shop/base_shop.html' %}
+
+{% block content %}
+<div class="col-md-9 g-4 post-content">
+    {% for category in current_categories %}
+    <a href="{{ category.get_absolute_url }}" class="text-decoration-none">{{ category }}</a>
+    {% if not forloop.last %}>{% endif %}
+    {% empty %}
+    {% endfor %}
+    <h2 class="text-center ">{{ product.name }}</h2>
+    <h5>Продавец: {{ product.salesman }}</h5>
+    {% if product.photo %}
+    <p><img src="{{ product.photo.url }}" class="card-img-top" alt=""></p>
+    {% endif %}
+    <span class="h5">Цена: {{ product.price }}</span>
+    <a href="{% url 'buy_product' slug=product.slug %}" class="btn btn-primary">Купить</a>
+    {% if product.slug in basket_products %}
+    <a href="{% url 'add_to_basket' slug=product.slug %}" class="btn btn-danger">Удалить из корзины</a>
+    {% else %}
+    <a href="{% url 'add_to_basket' slug=product.slug %}" class="btn btn-success">Добавить в корзину</a>
+    {% endif %}
+    {% autoescape off %}
+    <p>{{ product.description }}</p>
+    {% endautoescape %}
+</div>
+{% endblock %}
